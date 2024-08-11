@@ -1,0 +1,102 @@
+{
+    "info": {
+      "name": "Empreendimentos API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Get All Empreendimentos",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:5000/empreendimentos",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["empreendimentos"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Get Empreendimento by ID",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:5000/empreendimentos/:id",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["empreendimentos", ":id"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Create Empreendimento",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"nome\": \"Empreendimento Teste\",\n  \"endereco\": {\"rua\": \"Rua Teste\", \"numero\": \"123\"},\n  \"logo\": \"logo.png\",\n  \"status\": \"ativo\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:5000/empreendimentos",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["empreendimentos"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Update Empreendimento",
+        "request": {
+          "method": "PUT",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"nome\": \"Empreendimento Atualizado\",\n  \"endereco\": {\"rua\": \"Rua Nova\", \"numero\": \"456\"},\n  \"logo\": \"logo2.png\",\n  \"status\": \"inativo\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:5000/empreendimentos/:id",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["empreendimentos", ":id"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Delete Empreendimento",
+        "request": {
+          "method": "DELETE",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:5000/empreendimentos/:id",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["empreendimentos", ":id"]
+          }
+        },
+        "response": []
+      }
+    ]
+  }
+  

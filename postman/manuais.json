@@ -1,0 +1,142 @@
+{
+    "info": {
+        "name": "Manuais API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Get All Manuais",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:5000/manuais",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "manuais"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Manual by ID",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:5000/manuais/:id",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "manuais",
+                        ":id"
+                    ],
+                    "variable": [
+                        {
+                            "key": "id",
+                            "value": "1"
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Create Manual",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"titulo\": \"Manual Teste\",\n  \"descricao\": \"Descrição do manual\",\n  \"fotoCapa\": \"capa.png\",\n  \"blocos\": [1, 2, 3]\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:5000/manuais",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "manuais"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Update Manual",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"titulo\": \"Manual Atualizado\",\n  \"descricao\": \"Nova descrição do manual\",\n  \"fotoCapa\": \"nova_capa.png\",\n  \"blocos\": [2, 3, 4]\n}"
+                },
+                "url": {
+                    "raw": "http://localhost:5000/manuais/:id",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "manuais",
+                        ":id"
+                    ],
+                    "variable": [
+                        {
+                            "key": "id",
+                            "value": "1"
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Delete Manual",
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:5000/manuais/:id",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "manuais",
+                        ""
+                    ],
+                    "variable": [
+                        {
+                            "key": "id",
+                            "value": "1"
+                        }
+                    ]
+                }
+            },
+            "response": []
+        }
+    ]
+}

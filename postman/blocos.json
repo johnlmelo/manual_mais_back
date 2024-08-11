@@ -1,0 +1,120 @@
+{
+    "info": {
+      "name": "Blocos API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Get All Blocos",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:5000/blocos",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["blocos"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Get Bloco by ID",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:5000/blocos/:id",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["blocos", ":id"],
+            "variable": [
+              {
+                "key": "id",
+                "value": "1"
+              }
+            ]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Create Bloco",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"titulo\": \"Bloco Teste\",\n  \"conteudo\": \"Conteúdo do bloco\",\n  \"imagem\": \"imagem.png\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:5000/blocos",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["blocos"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Update Bloco",
+        "request": {
+          "method": "PUT",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"titulo\": \"Bloco Atualizado\",\n  \"conteudo\": \"Novo conteúdo do bloco\",\n  \"imagem\": \"nova_imagem.png\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:5000/blocos/:id",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["blocos", ":id"],
+            "variable": [
+              {
+                "key": "id",
+                "value": "1"
+              }
+            ]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Delete Bloco",
+        "request": {
+          "method": "DELETE",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:5000/blocos/:id",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["blocos", ":id"],
+            "variable": [
+              {
+                "key": "id",
+                "value": "1"
+              }
+            ]
+          }
+        },
+        "response": []
+      }
+    ]
+  }
+  
