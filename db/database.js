@@ -18,10 +18,10 @@ module.exports = {
       logging: false, // Desabilita a exibição de logs para testes
     },
     production: {
-      username: 'doadmin', // Recomendado: use variáveis de ambiente para produção
-      password: 'AVNS_SOXnvWoADyxlluQmw58',
-      database: 'defaultdb',
-      host: 'db-avati-app-prod-do-user-16223986-0.c.db.ondigitalocean.com',
+      username: 'webmaster', // Recomendado: use variáveis de ambiente para produção
+      password: '235689#Manual',
+      database: 'manual_db',
+      host: 'localhost',
       dialect: "mysql",
       port: 25060,
       timezone: "+03:00", // Ajuste conforme o fuso horário desejado
