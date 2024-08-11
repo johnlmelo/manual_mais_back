@@ -23,7 +23,7 @@ module.exports = {
       database: 'manual_db',
       host: 'localhost',
       dialect: "mysql",
-      port: 25060,
+      port: 3306,
       timezone: "+03:00", // Ajuste conforme o fuso horário desejado
       logging: false, // Geralmente desabilitado em produção
       pool: { // Opções de pool de conexão (opcional)
