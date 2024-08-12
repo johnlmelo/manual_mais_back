@@ -9,25 +9,25 @@ module.exports = (sequelize) => {
             primaryKey: true,
             autoIncrement: true,
         },
-        titulo: {
-            type: DataTypes.STRING,
-            allowNull: false
+        tipo: {
+            type: DataTypes.ENUM('texto', 'imagem', 'data', 'outro'),  // Enum para definir tipos de bloco
+            allowNull: false,
         },
         conteudo: {
-            type: DataTypes.TEXT,
-            allowNull: true,
+            type: DataTypes.TEXT,  // Para armazenar o conteúdo do bloco
+            allowNull: false,
         },
-        imagem: {
-            type: DataTypes.STRING,
-            allowNull: true,
+        ordem: {
+            type: DataTypes.INTEGER,  // Para definir a ordem dos blocos na página
+            allowNull: false,
         },
         createdAt: {
             type: DataTypes.DATE,
-            allowNull: true
+            allowNull: true,
         },
         updatedAt: {
             type: DataTypes.DATE,
-            allowNull: true
+            allowNull: true,
         },
     }, { sequelize, modelName: 'Blocos' });
 

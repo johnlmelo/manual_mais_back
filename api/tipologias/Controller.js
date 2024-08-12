@@ -1,9 +1,18 @@
-const { Tipologias } = require('../../db/models');
+const { where } = require('sequelize');
+const { Tipologias, Unidades } = require('../../db/models');
 
 // Get all tipologias
 exports.getAllTipologias = async (req, res) => {
     try {
-        const tipologias = await Tipologias.findAll();
+        const tipologias = await Tipologias.findAll({
+            where: {
+                EmpreendimentoId: req.params.EmpreendimentoId
+            },
+            include: [{
+                model: Unidades,
+                required: false
+            }]
+        });
         res.status(200).json(tipologias);
     } catch (error) {
         res.status(500).json({ error: error.message });

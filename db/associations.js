@@ -5,6 +5,8 @@ module.exports = (db) => {
         Torres,
         Tipologias,
         Unidades,
+        Pages,
+        Blocos
     } = db;
 
     // Associações com cascata de deleção
@@ -57,4 +59,29 @@ module.exports = (db) => {
         onDelete: 'CASCADE'
     });
 
+    // Pages e Blocos
+    Pages.hasMany(Blocos, {
+        onDelete: 'CASCADE'
+    });
+
+    Blocos.belongsTo(Pages, {
+        onDelete: 'CASCADE'
+    });
+
+    // Empreendimentos, Pages e Blocos
+    Empreendimentos.hasMany(Blocos, {
+        onDelete: 'CASCADE'
+    });
+
+    Empreendimentos.hasMany(Pages, {
+        onDelete: 'CASCADE'
+    });
+
+    Pages.belongsTo(Empreendimentos, {
+        onDelete: 'CASCADE'
+    });
+
+    Blocos.belongsTo(Empreendimentos, {
+        onDelete: 'CASCADE'
+    });
 };
