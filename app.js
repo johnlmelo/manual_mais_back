@@ -49,7 +49,7 @@ server.listen(5000, () => {
     // Sincronização do banco de dados
     // const ambiente = 'production';
     const ambiente = 'develop';
-    const syncOptions = ambiente === "production" ? {} : { force: true };
+    const syncOptions = ambiente === "production" ? {} : { alter: true };
     db.sequelize.sync(syncOptions).then(() => {
 
         console.log("Ambiente: ", ambiente);
@@ -59,4 +59,3 @@ server.listen(5000, () => {
         console.log("Erro: ", error );
     });
 });
-
