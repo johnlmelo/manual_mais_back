@@ -1,4 +1,5 @@
-const { Empreendimentos } = require('../../db/models');
+const { where } = require('sequelize');
+const { Empreendimentos, Pages, Blocos } = require('../../db/models');
 
 // Get all empreendimentos
 exports.getAllEmpreendimentos = async (req, res) => {
@@ -13,7 +14,20 @@ exports.getAllEmpreendimentos = async (req, res) => {
 // Get empreendimento by ID
 exports.getEmpreendimentoById = async (req, res) => {
     try {
-        const empreendimento = await Empreendimentos.findByPk(req.params.id);
+        const empreendimento = await Empreendimentos.findByPk(req.params.id, {
+            include: [
+                { 
+                    model: Pages,  // Substitua "OutraTabela" pelo nome da tabela associada
+                    required: false,
+                    include: [
+                        { 
+                            model: Blocos,  // Substitua "OutraTabela" pelo nome da tabela associada
+                            required: false,
+                        }
+                    ]
+                }
+            ]
+        });
         if (empreendimento) {
             res.status(200).json(empreendimento);
         } else {
