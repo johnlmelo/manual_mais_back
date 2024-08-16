@@ -3,7 +3,7 @@ const router = express.Router();
 const Controller = require('./Controller');
 
 // Get all unidades
-router.get('/', Controller.getAllUnidades);
+router.get('/:EmpreendimentoId', Controller.getAllUnidades);
 
 // Get unidade by ID
 router.get('/:id', Controller.getUnidadeById);

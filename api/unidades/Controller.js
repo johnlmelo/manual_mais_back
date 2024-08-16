@@ -3,7 +3,11 @@ const { Unidades } = require('../../db/models');
 // Get all unidades
 exports.getAllUnidades = async (req, res) => {
     try {
-        const unidades = await Unidades.findAll();
+        const unidades = await Unidades.findAll({
+            where: {
+                EmpreendimentoId: req.params.EmpreendimentoId
+            }
+        });
         res.status(200).json(unidades);
     } catch (error) {
         res.status(500).json({ error: error.message });
