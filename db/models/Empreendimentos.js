@@ -13,8 +13,16 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        cep: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
         endereco: {
-            type: DataTypes.JSON,
+            type: DataTypes.TEXT,
+            allowNull: true,
+        },
+        construtora: {
+            type: DataTypes.TEXT,
             allowNull: true,
         },
         logo: {

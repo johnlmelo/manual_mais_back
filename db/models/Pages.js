@@ -10,13 +10,28 @@ module.exports = (sequelize) => {
             autoIncrement: true,
         },
         nome: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING, 
             allowNull: false,
         },
         slug: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
+        },
+        status: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },icon: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },protegido: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true,
+        },destaque: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true,
+        },acessoRapido: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true,
         },
         conteudo: {
             type: DataTypes.TEXT,
@@ -30,7 +45,7 @@ module.exports = (sequelize) => {
                 key: 'id',
             },
             onDelete: 'CASCADE',
-            onUpdate: 'CASCADE',
+            onUpdate: 'CASCADE', 
         },
         createdAt: {
             type: DataTypes.DATE,

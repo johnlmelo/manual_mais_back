@@ -17,8 +17,8 @@ module.exports = (sequelize) => {
             type: DataTypes.TEXT,
             allowNull: true,
         },
-        fotoCapa: {
-            type: DataTypes.STRING,
+        paginas: {
+            type: DataTypes.JSON,
             allowNull: true,
         },
         createdAt: {

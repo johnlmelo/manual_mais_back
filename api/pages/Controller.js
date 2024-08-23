@@ -6,7 +6,27 @@ exports.getAllPages = async (req, res) => {
     try {
         const pages = await Pages.findAll({
             where: {
-                EmpreendimentoId: req.params.EmpreendimentoId
+                status: 'active'
+            },
+            include: [
+                { 
+                    model: Blocos,  // Substitua "OutraTabela" pelo nome da tabela associada
+                    required: false,
+                }
+            ]
+        });
+        res.status(200).json(pages);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Get all pages
+exports.getAllPagesAll = async (req, res) => {
+    try {
+        const pages = await Pages.findAll({
+            where: {
+                status: 'active'
             },
             include: [
                 { 
@@ -41,7 +61,7 @@ exports.createPage = async (req, res) => {
         const newPage = await Pages.create(req.body);
         res.status(201).json(newPage);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error });
     }
 };
 

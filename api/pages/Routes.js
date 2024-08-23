@@ -3,7 +3,8 @@ const router = express.Router();
 const Controller = require('./Controller');
 
 // Get all tipologias
-router.get('/:EmpreendimentoId', Controller.getAllPages);
+router.get('/', Controller.getAllPages);
+router.get('/all', Controller.getAllPagesAll);
 
 // Get tipologia by ID
 router.get('/:id', Controller.getPageById);
