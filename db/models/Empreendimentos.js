@@ -32,6 +32,10 @@ module.exports = (sequelize) => {
         corDestaque: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        dataHabite: {
+            type: DataTypes.DATE,
+            allowNull: false
         }, 
         status: {
             type: DataTypes.STRING,
