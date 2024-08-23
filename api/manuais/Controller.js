@@ -1,9 +1,10 @@
+const { where } = require('sequelize');
 const { Manuais, Blocos } = require('../../db/models');
 
 // Get all manuais
 exports.getAllManuais = async (req, res) => {
     try {
-        const manuais = await Manuais.findAll({ include: Blocos });
+        const manuais = await Manuais.findAll();
         res.status(200).json(manuais);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -13,7 +14,25 @@ exports.getAllManuais = async (req, res) => {
 // Get manual by ID
 exports.getManualById = async (req, res) => {
     try {
-        const manual = await Manuais.findByPk(req.params.id, { include: Blocos });
+        const manual = await Manuais.findByPk(req.params.id);
+        if (manual) {
+            res.status(200).json(manual);
+        } else {
+            res.status(404).json({ message: 'Manual not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Get manual by ID
+exports.getManualByCompanyId = async (req, res) => {
+    try {
+        const manual = await Manuais.findAll({
+            where: {
+                EmpreendimentoId: req.params.id
+            }
+        });
         if (manual) {
             res.status(200).json(manual);
         } else {
@@ -27,16 +46,9 @@ exports.getManualById = async (req, res) => {
 // Create a new manual
 exports.createManual = async (req, res) => {
     try {
-        const { titulo, descricao, fotoCapa, blocos } = req.body;
-        const newManual = await Manuais.create({ titulo, descricao, fotoCapa });
+        const newManual = await Manuais.create(req.body);
         
-        if (blocos && blocos.length > 0) {
-            const blocosInstances = await Blocos.findAll({ where: { id: blocos } });
-            await newManual.setBlocos(blocosInstances);
-        }
-
-        const manualWithBlocos = await Manuais.findByPk(newManual.id, { include: Blocos });
-        res.status(201).json(manualWithBlocos);
+        res.status(201).json(newManual);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -45,21 +57,12 @@ exports.createManual = async (req, res) => {
 // Update a manual
 exports.updateManual = async (req, res) => {
     try {
-        const { titulo, descricao, fotoCapa, blocos } = req.body;
-        const [updated] = await Manuais.update({ titulo, descricao, fotoCapa }, {
+        const updated = await Manuais.update(req.body, {
             where: { id: req.params.id }
         });
 
         if (updated) {
-            const updatedManual = await Manuais.findByPk(req.params.id);
-            
-            if (blocos && blocos.length > 0) {
-                const blocosInstances = await Blocos.findAll({ where: { id: blocos } });
-                await updatedManual.setBlocos(blocosInstances);
-            }
-
-            const manualWithBlocos = await Manuais.findByPk(updatedManual.id, { include: Blocos });
-            res.status(200).json(manualWithBlocos);
+            res.status(200).json(updated);
         } else {
             res.status(404).json({ message: 'Manual not found' });
         }

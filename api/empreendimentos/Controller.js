@@ -1,10 +1,18 @@
 const { where } = require('sequelize');
-const { Empreendimentos, Pages, Blocos } = require('../../db/models');
+const { Empreendimentos, Pages, Blocos, Manuais } = require('../../db/models');
+const { status } = require('express/lib/response');
 
 // Get all empreendimentos
 exports.getAllEmpreendimentos = async (req, res) => {
     try {
-        const empreendimentos = await Empreendimentos.findAll();
+        const empreendimentos = await Empreendimentos.findAll({
+            include: [
+                { 
+                    model: Manuais,  // Substitua "OutraTabela" pelo nome da tabela associada
+                    required: false,
+                }
+            ]
+        });
         res.status(200).json(empreendimentos);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -17,14 +25,8 @@ exports.getEmpreendimentoById = async (req, res) => {
         const empreendimento = await Empreendimentos.findByPk(req.params.id, {
             include: [
                 { 
-                    model: Pages,  // Substitua "OutraTabela" pelo nome da tabela associada
+                    model: Manuais,  // Substitua "OutraTabela" pelo nome da tabela associada
                     required: false,
-                    include: [
-                        { 
-                            model: Blocos,  // Substitua "OutraTabela" pelo nome da tabela associada
-                            required: false,
-                        }
-                    ]
                 }
             ]
         });
