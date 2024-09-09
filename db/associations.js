@@ -8,9 +8,19 @@ module.exports = (db) => {
         Pages,
         Blocos,
         Manuais,
+        TabelaGarantia,
+        LinhaGarantia,
     } = db;
 
     // Associações com cascata de deleção
+
+    // Empreendimentos e Torres
+    LinhaGarantia.belongsTo(TabelaGarantia, {
+        onDelete: 'CASCADE'
+    });
+    TabelaGarantia.hasMany(LinhaGarantia, {
+        onDelete: 'CASCADE'
+    });
 
     // Empreendimentos e Torres
     Torres.belongsTo(Empreendimentos, {
