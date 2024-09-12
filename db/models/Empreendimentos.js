@@ -36,6 +36,10 @@ module.exports = (sequelize) => {
         dataHabite: {
             type: DataTypes.DATE,
             allowNull: true
+        },
+        metadata: {
+            type: DataTypes.JSON,
+            allowNull: true
         }, 
         status: {
             type: DataTypes.STRING,
