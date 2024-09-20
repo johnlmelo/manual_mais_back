@@ -21,6 +21,10 @@ module.exports = (sequelize) => {
             type: DataTypes.JSON,
             allowNull: true,
         },
+        garantias: {
+            type: DataTypes.JSON,
+            allowNull: true,
+        },
         createdAt: {
             type: DataTypes.DATE,
             allowNull: true

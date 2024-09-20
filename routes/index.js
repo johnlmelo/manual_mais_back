@@ -6,6 +6,7 @@ const Torres = require('../api/torres/Routes');
 const Pages = require('../api/pages/Routes');
 const Tipologias = require('../api/tipologias/Routes');
 const TabelaGarantia = require('../api/tabeladegarantia/Routes');
+const Material = require('../api/materiais/Routes');
 const LinhaGarantia = require('../api/linhagarantia/Routes');
 const TagsReusaveis = require('../api/TagsReusaveis/Routes');
 const Unidades = require('../api/unidades/Routes');
@@ -15,6 +16,7 @@ const setupRoutes = (app) => {
     app.use('/blocos', Blocos);
     app.use('/', Files);
     app.use('/manuais', Manuais);
+    app.use('/materiais', Material);
     app.use('/torres', Torres);
     app.use('/pages', Pages);
     app.use('/tabela-garantia', TabelaGarantia);
