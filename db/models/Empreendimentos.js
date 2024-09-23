@@ -40,10 +40,18 @@ module.exports = (sequelize) => {
         metadata: {
             type: DataTypes.JSON,
             allowNull: true
+        },
+        plantas: {
+            type: DataTypes.JSON,
+            allowNull: true
         }, 
         status: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        validAt: {
+            type: DataTypes.DATE,
+            allowNull: true
         },
         createdAt: {
             type: DataTypes.DATE,

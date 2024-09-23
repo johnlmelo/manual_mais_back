@@ -25,6 +25,10 @@ module.exports = (sequelize) => {
             type: DataTypes.JSON,
             allowNull: true,
         },
+        materiais: {
+            type: DataTypes.JSON,
+            allowNull: true,
+        },
         createdAt: {
             type: DataTypes.DATE,
             allowNull: true
