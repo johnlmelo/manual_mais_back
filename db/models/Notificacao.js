@@ -26,7 +26,7 @@ module.exports = (sequelize) => {
                 'Atividade de Manutenção Vencida',
                 'Mensagem Geral'
             ),
-            allowNull: false,
+            allowNull: true,
         },
         destinatarios: {
             type: DataTypes.STRING, // Pode ser 'todos', 'empreendimento:<id>', 'grupo:<id>', etc.
