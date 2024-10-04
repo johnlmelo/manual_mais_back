@@ -1,9 +1,9 @@
-const { Fornecedores } = require('../../db/models');
+const { ManutencaoPreventiva } = require('../../db/models');
 
 // Get all pages
 exports.getAll = async (req, res) => {
     try {
-        const pages = await Fornecedores.findAll({
+        const pages = await ManutencaoPreventiva.findAll({
             where: {
                 status: 'active'
             }
@@ -17,11 +17,11 @@ exports.getAll = async (req, res) => {
 // Get page by ID
 exports.getById = async (req, res) => {
     try {
-        const page = await Fornecedores.findByPk(req.params.id);
+        const page = await ManutencaoPreventiva.findByPk(req.params.id);
         if (page) {
             res.status(200).json(page);
         } else {
-            res.status(404).json({ message: 'Fornecedores not found' });
+            res.status(404).json({ message: 'ManutencaoPreventiva not found' });
         }
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -31,8 +31,8 @@ exports.getById = async (req, res) => {
 // Create a new page
 exports.create = async (req, res) => {
     try {
-        const newFornecedores = await Fornecedores.create(req.body);
-        res.status(201).json(newFornecedores);
+        const newManutencaoPreventiva = await ManutencaoPreventiva.create(req.body);
+        res.status(201).json(newManutencaoPreventiva);
     } catch (error) {
         res.status(500).json({ error: error });
     }
@@ -41,14 +41,14 @@ exports.create = async (req, res) => {
 // Update a page
 exports.update = async (req, res) => {
     try {
-        const [updated] = await Fornecedores.update(req.body, {
+        const [updated] = await ManutencaoPreventiva.update(req.body, {
             where: { id: req.params.id }
         });
         if (updated) {
-            const updatedFornecedores = await Fornecedores.findByPk(req.params.id);
-            res.status(200).json(updatedFornecedores);
+            const updatedManutencaoPreventiva = await ManutencaoPreventiva.findByPk(req.params.id);
+            res.status(200).json(updatedManutencaoPreventiva);
         } else {
-            res.status(404).json({ message: 'Fornecedores not found' });
+            res.status(404).json({ message: 'ManutencaoPreventiva not found' });
         }
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -58,13 +58,13 @@ exports.update = async (req, res) => {
 // Delete a page
 exports.delete = async (req, res) => {
     try {
-        const deleted = await Fornecedores.destroy({
+        const deleted = await ManutencaoPreventiva.destroy({
             where: { id: req.params.id }
         });
         if (deleted) {
-            res.status(204).json({ message: 'Fornecedores deleted' });
+            res.status(204).json({ message: 'ManutencaoPreventiva deleted' });
         } else {
-            res.status(404).json({ message: 'Fornecedores not found' });
+            res.status(404).json({ message: 'ManutencaoPreventiva not found' });
         }
     } catch (error) {
         res.status(500).json({ error: error.message });
