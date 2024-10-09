@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
             autoIncrement: true,
         },
         tipo: {
-            type: DataTypes.ENUM('texto', 'imagem', 'data', 'outro'),  // Enum para definir tipos de bloco
+            type: DataTypes.STRING,  // Enum para definir tipos de bloco
             allowNull: false,
         },
         conteudo: {

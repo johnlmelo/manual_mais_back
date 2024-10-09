@@ -8,6 +8,8 @@ router.get('/', manuaisController.getAllManuais);
 // Get manual by ID
 router.get('/:id', manuaisController.getManualById);
 
+router.get('/count-bloco/:BlocoId', manuaisController.getCountBlocoId);
+
 router.get('/company/:id', manuaisController.getManualByCompanyId);
 
 // Create a new manual

@@ -25,6 +25,38 @@ exports.getManualById = async (req, res) => {
     }
 };
 
+// Get count of specific Bloco ID in all manuals
+exports.getCountBlocoId = async (req, res) => {
+    try {
+        const blocoId = req.params.BlocoId;
+        const manuais = await Manuais.findAll();
+
+        // return res.status(200).json({ manuais });
+        
+        if (manuais.length > 0) {
+            let count = 0;
+            
+            manuais.forEach(manual => {
+                const paginas = manual.paginas;
+                paginas.forEach(pagina => {
+                    pagina.blocos.forEach(bloco => {
+                        if (bloco.id == blocoId) {
+                            count++;
+                        }
+                    });
+                });
+            });
+            
+            
+            return res.status(200).json({ count });
+        } else {
+            return res.status(404).json({ message: 'Sem Manuais cadastrados' });
+        }
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+};
+
 // Get manual by ID
 exports.getManualByCompanyId = async (req, res) => {
     try {
