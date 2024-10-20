@@ -11,7 +11,7 @@ const setupRoutes = require('./routes');
 
 // Configuração do CORS
 app.use(cors({
-    origin: '*',  // Permite todas as origens
+    origin: 'https://app.manualmais.com.br',  // Permite todas as origens
     methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Métodos HTTP permitidos
     allowedHeaders: ['Content-Type', 'Authorization'],  // Cabeçalhos HTTP permitidos
     credentials: true  // Permite cookies e dados de autenticação
