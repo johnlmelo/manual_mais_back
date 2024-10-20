@@ -25,6 +25,18 @@ module.exports = (sequelize) => {
             type: DataTypes.JSON,
             allowNull: true,
         },
+        fornecedores: {
+            type: DataTypes.JSON,
+            allowNull: true,
+        },
+        manutencoes: {
+            type: DataTypes.JSON,
+            allowNull: true,
+        },
+        tutoriais: {
+            type: DataTypes.JSON,
+            allowNull: true,
+        },
         materiais: {
             type: DataTypes.JSON,
             allowNull: true,

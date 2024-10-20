@@ -14,6 +14,8 @@ const ManutencaoPreventiva = require('../api/manutencao/Routes');
 const LinhaGarantia = require('../api/linhagarantia/Routes');
 const TagsReusaveis = require('../api/TagsReusaveis/Routes');
 const Unidades = require('../api/unidades/Routes');
+const Documents = require('../api/documentos/Routes');
+const User = require('../api/user/Routes');
 
 const setupRoutes = (app) => {
     app.use('/empreendimentos', Empreendimentos);
@@ -21,6 +23,7 @@ const setupRoutes = (app) => {
     app.use('/', Files);
     app.use('/manuais', Manuais);
     app.use('/materiais', Material);
+    app.use('/documents', Documents);
     app.use('/fornecedores', Fornecedores);
     app.use('/tutoriais', Tutoriais);
     app.use('/notificacoes', Notificacao);
@@ -31,6 +34,7 @@ const setupRoutes = (app) => {
     app.use('/linha-garantia', LinhaGarantia);
     app.use('/tipologias', Tipologias);
     app.use('/unidades', Unidades);
+    app.use('/user', User);
     app.use('/tags-reusaveis', TagsReusaveis);
 };
 
