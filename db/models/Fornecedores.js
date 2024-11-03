@@ -19,14 +19,11 @@ module.exports = (sequelize) => {
         },
         telefone: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         email: {
             type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                isEmail: true,
-            },
+            allowNull: true,
         },
         site: {
             type: DataTypes.STRING,
@@ -38,29 +35,21 @@ module.exports = (sequelize) => {
         },
         destaque: {
             type: DataTypes.BOOLEAN,
-            defaultValue: false,
+            defaultValue: true,
         },
         ranking: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
             defaultValue: 0,
-            validate: {
-                min: 0,
-                max: 5,
-            },
         },
         tipo: {
-            type: DataTypes.ENUM(
-              'Fornecedores de Materiais e Serviços',
-              'Projetistas',
-              'Contatos Úteis'
-            ),
-            allowNull: false,
+            type: DataTypes.STRING,
+            allowNull: true,
         },
         status: {
             type: DataTypes.STRING,
             defaultValue: 'active',
-            allowNull: true,
+            allowNull: false,
         },
         createdAt: {
             type: DataTypes.DATE,

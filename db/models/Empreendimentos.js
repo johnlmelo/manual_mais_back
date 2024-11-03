@@ -12,6 +12,10 @@ module.exports = (sequelize) => {
         nome: {
             type: DataTypes.STRING,
             allowNull: false
+        },        
+        descricao: {
+            type: DataTypes.TEXT,
+            allowNull: true
         },
         cep: {
             type: DataTypes.STRING,
