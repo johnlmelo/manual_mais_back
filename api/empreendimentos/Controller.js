@@ -1,6 +1,5 @@
 const { where } = require('sequelize');
-const { Empreendimentos, Pages, Blocos, Manuais } = require('../../db/models');
-const { status } = require('express/lib/response');
+const { Empreendimentos, Pages, Blocos, Manuais, Documents } = require('../../db/models');
 
 // Get all empreendimentos
 exports.getAllEmpreendimentos = async (req, res) => {
@@ -9,6 +8,10 @@ exports.getAllEmpreendimentos = async (req, res) => {
             include: [
                 { 
                     model: Manuais,  // Substitua "OutraTabela" pelo nome da tabela associada
+                    required: false,
+                },
+                { 
+                    model: Documents,  // Substitua "OutraTabela" pelo nome da tabela associada
                     required: false,
                 }
             ]
@@ -27,6 +30,10 @@ exports.getEmpreendimentoById = async (req, res) => {
                 { 
                     model: Manuais,  // Substitua "OutraTabela" pelo nome da tabela associada
                     required: false,
+                },
+                { 
+                    model: Documents,  // Substitua "OutraTabela" pelo nome da tabela associada
+                    required: false,
                 }
             ]
         });
@@ -39,6 +46,70 @@ exports.getEmpreendimentoById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.cloneEmpreendimento = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Encontrar o empreendimento original com todas as associações
+        const empreendimentoOriginal = await Empreendimentos.findByPk(id, {
+            include: [
+                { model: Manuais },
+                { model: Pages, include: [Blocos] },
+            ],
+        });
+
+        if (!empreendimentoOriginal) {
+            return res.status(404).json({ message: "Empreendimento não encontrado" });
+        }
+
+        // Clonar o empreendimento
+        const novoEmpreendimento = await Empreendimentos.create({
+            ...empreendimentoOriginal.get(), // Clona os atributos do empreendimento
+            nome: `Novo Empreendimento (clone)`, // Exemplo de mudança de nome para evitar duplicidades
+            id: undefined, // Gera um novo ID automaticamente
+        });
+
+        // Clonar manuais associados
+        const manualOriginal = empreendimentoOriginal.Manuais[0]; // Supondo que haja um manual por empreendimento
+        if (manualOriginal) {
+            await Manuais.create({
+                ...manualOriginal.get(),
+                EmpreendimentoId: novoEmpreendimento.id,
+                id: undefined,
+            });
+        }
+
+        // Clonar páginas e blocos associados
+        for (const page of empreendimentoOriginal.Pages) {
+            const novaPage = await Pages.create({
+                ...page.get(),
+                EmpreendimentoId: novoEmpreendimento.id,
+                id: undefined,
+            });
+
+            // Clonar blocos associados à página
+            for (const bloco of page.Blocos) {
+                await Blocos.create({
+                    ...bloco.get(),
+                    PageId: novaPage.id,
+                    EmpreendimentoId: novoEmpreendimento.id,
+                    id: undefined,
+                });
+            }
+        }
+
+        res.status(201).json({
+            message: "Empreendimento clonado com sucesso",
+            novoEmpreendimento,
+        });
+
+    } catch (error) {
+        console.error("Erro ao clonar empreendimento:", error);
+        res.status(500).json({ message: "Erro ao clonar empreendimento", error });
+    }
+};
+
 
 // Create a new empreendimento
 exports.createEmpreendimento = async (req, res) => {

@@ -8,6 +8,9 @@ router.get('/', Controller.getAllEmpreendimentos);
 // Get empreendimento by ID
 router.get('/:id', Controller.getEmpreendimentoById);
 
+//
+router.get('/:id/clonar', Controller.cloneEmpreendimento);
+
 // Create a new empreendimento
 router.post('/', Controller.createEmpreendimento);
 
