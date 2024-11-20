@@ -1,6 +1,6 @@
-const { where } = require('sequelize');
-const { Manuais, Blocos } = require('../../db/models');
-
+const { Manuais, Blocos, Empreendimentos } = require('../../db/models');
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
 // Get all manuais
 exports.getAllManuais = async (req, res) => {
     try {
@@ -8,6 +8,106 @@ exports.getAllManuais = async (req, res) => {
         res.status(200).json(manuais);
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+};
+
+function removeHtmlTags(input) {
+    if (!input) return ''; // Retorna uma string vazia se a entrada for nula ou indefinida
+    return input.replace(/<[^>]*>/g, '').trim();
+}
+
+function processHtml(input) {
+    if (!input) return ''; // Retorna string vazia se a entrada for nula ou indefinida
+
+    return input
+        .replace(/<br\s*\/?>/gi, '\n') // Substitui <br> por quebras de linha (\n)
+        .replace(/<\/?[^>]+(>|$)/g, '') // Remove outras tags HTML
+        .split('\n') // Divide o texto em parágrafos com base nas quebras de linha
+        .map(paragraph => paragraph.trim()) // Remove espaços extras em cada parágrafo
+        .filter(paragraph => paragraph !== '') // Remove parágrafos vazios
+        .join('\n\n'); // Junta os parágrafos com espaçamento duplo
+}
+
+// Get all manuais
+exports.exportarEmPDF = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Buscar os dados do empreendimento e seus manuais
+        const empreendimento = await Empreendimentos.findByPk(id, {
+            include: [
+                { 
+                    model: Manuais
+                }
+            ],
+        });
+
+        if (!empreendimento) {
+            return res.status(404).json({ message: 'Empreendimento não encontrado' });
+        }
+
+        const blocos = await Promise.all(
+            empreendimento.Manuais.map(async (manual) => {
+                return Promise.all(
+                    manual.paginas.map(async (pagina) => {
+                        return Promise.all(
+                            pagina.blocos.map(async (bloco) => {
+                                const getBloco = await Blocos.findByPk(bloco.id);
+                                return processHtml(JSON.stringify(getBloco.conteudo));
+                            })
+                        );
+                    })
+                );
+            })
+        );        
+
+        // Criar o PDF
+        const doc = new PDFDocument();
+        const filePath = `relatorio_empreendimento_${id}.pdf`;
+
+        // Configurar resposta para download do PDF
+        res.setHeader('Content-Disposition', `attachment; filename="${filePath}"`);
+        res.setHeader('Content-Type', 'application/pdf');
+
+        // Escrever no stream de resposta diretamente
+        doc.pipe(res);
+
+        // Título do documento
+        doc.fontSize(14).text(`Manual do Empreendimento`, { align: 'center' });
+        doc.moveDown();
+        doc.fontSize(18).text(`${empreendimento.nome}`, { align: 'center' });
+        doc.moveDown();
+
+        // Informações do empreendimento
+        doc.fontSize(12).text(`Descrição: ${removeHtmlTags(empreendimento.descricao) || 'Não disponível'}`);
+        doc.text(`Endereço: ${empreendimento.endereco || 'Não disponível'}`);
+        doc.text(`Construtora: ${empreendimento.construtora || 'Não disponível'}`);
+        doc.text(`Data Habite-se: ${new Date(empreendimento.dataHabite).toLocaleDateString() || 'Não disponível'}`);
+        doc.moveDown();
+
+        doc.fontSize(12).text(blocos);
+        doc.moveDown();
+
+        empreendimento.Manuais.forEach((manual, index) => {
+        
+            doc.text(`Garantias:`);
+            doc.moveDown();
+            doc.text(`${JSON.stringify(manual.garantias) || 'Não disponível'}`);
+            doc.moveDown();
+            
+            doc.text(`Fornecedores:`);
+            doc.moveDown();
+            doc.text(`${JSON.stringify(manual.fornecedores) || 'Não disponível'}`);
+            doc.moveDown();
+
+        });
+
+        // Finalizar o PDF
+        doc.end();
+
+    } catch (error) {
+        console.error('Erro ao gerar o relatório:', error);
+        res.status(500).json({ error: 'Erro ao gerar o relatório' });
     }
 };
 

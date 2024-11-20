@@ -8,6 +8,9 @@ router.get('/', manuaisController.getAllManuais);
 // Get manual by ID
 router.get('/:id', manuaisController.getManualById);
 
+// export
+router.get('/export-pdf/:id', manuaisController.exportarEmPDF);
+
 router.get('/count-bloco/:BlocoId', manuaisController.getCountBlocoId);
 
 router.get('/company/:id', manuaisController.getManualByCompanyId);

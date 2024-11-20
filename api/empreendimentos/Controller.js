@@ -1,10 +1,13 @@
-const { where } = require('sequelize');
+const { Op } = require('sequelize');
 const { Empreendimentos, Pages, Blocos, Manuais, Documents } = require('../../db/models');
 
 // Get all empreendimentos
 exports.getAllEmpreendimentos = async (req, res) => {
     try {
         const empreendimentos = await Empreendimentos.findAll({
+            where: {
+                status: {[Op.ne]: 'deleted'}
+            },
             include: [
                 { 
                     model: Manuais,  // Substitua "OutraTabela" pelo nome da tabela associada
