@@ -1,6 +1,9 @@
 const { Manuais, Blocos, Empreendimentos, TagsReusaveis } = require('../../db/models');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
+
+const streamBuffers = require('stream-buffers');
+
 // Get all manuais
 exports.getAllManuais = async (req, res) => {
     try {
@@ -106,18 +109,13 @@ exports.exportarEmPDF = async (req, res) => {
                     })
                 );
             })
-        );        
+        );
+
+        const buffer = new streamBuffers.WritableStreamBuffer();
 
         // Criar o PDF
         const doc = new PDFDocument();
-        const filePath = `relatorio_empreendimento_${id}.pdf`;
-
-        // Configurar resposta para download do PDF
-        res.setHeader('Content-Disposition', `attachment; filename="${filePath}"`);
-        res.setHeader('Content-Type', 'application/pdf');
-
-        // Escrever no stream de resposta diretamente
-        doc.pipe(res);
+        doc.pipe(buffer);
 
         // Título do documento
         doc.fontSize(14).text(`Manual do Empreendimento`, { align: 'center' });
@@ -158,6 +156,13 @@ exports.exportarEmPDF = async (req, res) => {
         
         // Finalizar o PDF
         doc.end();
+
+
+        // Converter o PDF em base64
+        buffer.on('finish', () => {
+            const pdfBase64 = buffer.getContents().toString('base64');
+            res.json({ pdf: pdfBase64 });
+        });
 
     } catch (error) {
         console.error('Erro ao gerar o relatório:', error);
