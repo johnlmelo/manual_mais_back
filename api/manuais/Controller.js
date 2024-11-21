@@ -132,7 +132,7 @@ exports.exportarEmPDF = async (req, res) => {
         doc.text(`Data Habite-se: ${new Date(empreendimento.dataHabite).toLocaleDateString() || 'Não disponível'}`);
         doc.moveDown();
 
-        doc.fontSize(12).text(blocos);
+        doc.fontSize(12).text(blocos.toString());
         doc.moveDown();
 
         empreendimento.Manuais.forEach((manual, index) => {
@@ -156,8 +156,6 @@ exports.exportarEmPDF = async (req, res) => {
         });
         
         
-        
-
         // Finalizar o PDF
         doc.end();
 
