@@ -1,4 +1,4 @@
-const { Manuais, Blocos, Empreendimentos } = require('../../db/models');
+const { Manuais, Blocos, Empreendimentos, TagsReusaveis } = require('../../db/models');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 // Get all manuais
@@ -28,10 +28,57 @@ function processHtml(input) {
         .join('\n\n'); // Junta os parágrafos com espaçamento duplo
 }
 
+function substituirTagsPorValores(obj, str, tagsPersonalizadas) {
+    if (!str) {
+      return '';
+    }
+  
+    // Tags fixas
+    const tagsFixas = [
+      { label: "nome", tag: "{nome_empreendimento}" },
+      { label: "construtora", tag: "{construtora}" },
+      { label: "endereco", tag: "{endereco}" },
+      { label: "dataHabite", tag: "{dataHabite}" },
+      { label: "descricao", tag: "{descricao}" },
+    ];
+  
+    // Função para formatar a data em UTC e exibir conforme o fuso horário local
+    const formatDate = (dateString) => {
+      const date = new Date(dateString); // Cria a data no formato UTC
+      return new Intl.DateTimeFormat('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        timeZone: 'UTC' // Define UTC para evitar mudança de dia com base no fuso horário local
+      }).format(date);
+    };
+  
+    // Substituir tags fixas
+    tagsFixas.forEach(({ label, tag }) => {
+      let valor;
+      if (label === 'dataHabite') {
+        valor = obj[label] ? formatDate(obj[label]) : '';
+      } else {
+        valor = obj[label] || ''; // Se o valor não existir no objeto, define como string vazia
+      }
+      str = str.replace(new RegExp(tag, 'g'), valor);
+    });
+  
+    // Substituir tags personalizadas
+    tagsPersonalizadas.forEach(({ tag }) => {
+      const valor = obj.metadata && obj.metadata[tag] ? obj.metadata[tag] : ''; // Se o valor não existir no objeto, define como string vazia
+      str = str.replace(new RegExp(tag, 'g'), valor);
+    });
+  
+    return str;
+}
+
 // Get all manuais
 exports.exportarEmPDF = async (req, res) => {
     try {
         const { id } = req.params;
+
+        const tags = await TagsReusaveis.findAll();
 
         // Buscar os dados do empreendimento e seus manuais
         const empreendimento = await Empreendimentos.findByPk(id, {
@@ -53,7 +100,7 @@ exports.exportarEmPDF = async (req, res) => {
                         return Promise.all(
                             pagina.blocos.map(async (bloco) => {
                                 const getBloco = await Blocos.findByPk(bloco.id);
-                                return processHtml(JSON.stringify(getBloco.conteudo));
+                                return processHtml(substituirTagsPorValores(empreendimento, JSON.stringify(getBloco.conteudo), tags));
                             })
                         );
                     })
@@ -89,18 +136,27 @@ exports.exportarEmPDF = async (req, res) => {
         doc.moveDown();
 
         empreendimento.Manuais.forEach((manual, index) => {
+            // Garantias
+            doc.fontSize(18).text(`Garantias:`, { underline: true });
+            doc.moveDown(0.5);
         
-            doc.text(`Garantias:`);
+            if (manual.garantias?.items?.length) {
+                manual.garantias.items.forEach(item => {
+                    doc.fontSize(12).text(`Nome: ${item.nome}`);
+                    doc.text(`Descrição: ${item.descricao}`);
+                    doc.text(`Tipo de Falha: ${item.tipoFalha}`);
+                    doc.text(`Prazo: ${item.prazoGarantia}`);
+                    doc.text('----------------------');
+                    doc.moveDown(0.5);
+                });
+            } else {
+                doc.text("Não disponível");
+            }
             doc.moveDown();
-            doc.text(`${JSON.stringify(manual.garantias) || 'Não disponível'}`);
-            doc.moveDown();
-            
-            doc.text(`Fornecedores:`);
-            doc.moveDown();
-            doc.text(`${JSON.stringify(manual.fornecedores) || 'Não disponível'}`);
-            doc.moveDown();
-
         });
+        
+        
+        
 
         // Finalizar o PDF
         doc.end();
