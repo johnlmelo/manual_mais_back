@@ -68,9 +68,13 @@ exports.cloneEmpreendimento = async (req, res) => {
 
         // Clonar o empreendimento
         const novoEmpreendimento = await Empreendimentos.create({
-            ...empreendimentoOriginal.get(), // Clona os atributos do empreendimento
-            nome: `Novo Empreendimento (clone)`, // Exemplo de mudança de nome para evitar duplicidades
-            id: undefined, // Gera um novo ID automaticamente
+            nome: "Novo Empreedimento",
+            endereco: "",
+            construtora: "",
+            logo: "",
+            status: "Desenvolvimento",
+            corDestaque: "",
+            id: undefined // Exemplo de mudança de nome para evitar duplicidades
         });
 
         // Clonar manuais associados
