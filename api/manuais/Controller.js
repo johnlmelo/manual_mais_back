@@ -163,7 +163,7 @@ exports.exportarEmPDF = async (req, res) => {
 
     } catch (error) {
         console.error('Erro ao gerar o relatório:', error);
-        res.status(500).json({ error: 'Erro ao gerar o relatório' });
+        res.status(500).json({ error: 'Erro ao gerar o relatório', erro: error });
     }
 };
 
