@@ -9,21 +9,18 @@ const db = require('./db/models');
 // Importar rotas
 const setupRoutes = require('./routes');
 
-// Configuração do CORS
-app.use(cors({
-    origin: 'https://app.manualmais.com.br',  // Permite todas as origens
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Métodos HTTP permitidos
-    allowedHeaders: ['Content-Type', 'Authorization'],  // Cabeçalhos HTTP permitidos
-    credentials: true  // Permite cookies e dados de autenticação
-}));
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
 
 // Middleware para análise do corpo da solicitação
+
 app.use(express.json({ limit: '500mb' }));
-app.use(express.urlencoded({
-    limit: '500mb',
-    parameterLimit: 100000,
-    extended: true
-}));
+app.use(express.urlencoded({ extended: true, limit: '500mb' }));
 
 // Setup de rotas
 setupRoutes(app);
