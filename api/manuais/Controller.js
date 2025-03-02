@@ -117,6 +117,10 @@ exports.exportarEmPDF = async (req, res) => {
         const doc = new PDFDocument();
         doc.pipe(buffer);
 
+
+        // Escrever no stream de resposta diretamente
+        doc.pipe(res);
+
         // Título do documento
         doc.fontSize(14).text(`Manual do Empreendimento`, { align: 'center' });
         doc.moveDown();
