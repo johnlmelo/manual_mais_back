@@ -1,51 +1,39 @@
 const express = require('express');
 const http = require('http');
-
-const app = express();
 const cors = require('cors');
-app.use(cors());
-const server = http.createServer(app);
-
 const fileUpload = require('express-fileupload');
 const db = require('./db/models');
 
-app.use(fileUpload()); 
-// Importar rotas
+const app = express();
 
-const setupRoutes = require('./routes');
-// Middleware para análise do corpo da solicitação
-
+// Middlewares
+app.use(cors());
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ extended: true, limit: '500mb' }));
+app.use(fileUpload());
 
-// Setup de rotas
+// Rotas
+const setupRoutes = require('./routes');
 setupRoutes(app);
 
-// Servindo arquivos estáticos
+// Arquivos estáticos
 app.use('/storage', express.static(__dirname + '/public/files/'));
-
-// Documentação
-// const swaggerUi = require('swagger-ui-express');
-// const swaggerSpec = require('./swaggerDefinition');
-// app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Middleware para tratamento de erros
 app.use((err, req, res, next) => {
-    console.error(err.stack); // Log do erro para debugging
-    res.status(500).send({ error: 'Algo deu errado!' });
+    console.error('Erro:', err.stack);
+    res.status(500).json({ error: 'Algo deu errado!' });
 });
 
-
 // Iniciar o servidor
-server.listen(5000, () => {
-    const ambiente = 'production';
-    const syncOptions = { alter: true };
-    db.sequelize.sync(syncOptions).then(() => {
-
-        console.log("Ambiente: ", ambiente);
-        console.log("Todos os modelos foram sincronizados com sucesso.");
-        
-    }).catch((error)=>{
-        console.log("Erro: ", error );
-    });
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    db.sequelize.sync({ alter: true })
+        .then(() => {
+            console.log("Ambiente: production");
+            console.log("Servidor e DB sincronizados na porta " + PORT);
+        })
+        .catch(error => {
+            console.error("Erro ao sincronizar DB: ", error);
+        });
 });
