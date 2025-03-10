@@ -3,10 +3,12 @@ const http = require('http');
 const cors = require('cors');
 const app = express();
 const server = http.createServer(app);
-
+const fileUpload = require('express-fileupload');
 const db = require('./db/models');
 
+app.use(fileUpload()); 
 // Importar rotas
+
 const setupRoutes = require('./routes');
 
 
@@ -45,7 +47,7 @@ server.listen(5000, () => {
 
     // Sincronização do banco de dados
     // const ambiente = 'production';
-    const ambiente = 'production';
+    const ambiente = 'develop';
     const syncOptions = ambiente === "production" ? {} : { alter: true };
     db.sequelize.sync(syncOptions).then(() => {
 
