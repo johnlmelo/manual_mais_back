@@ -45,10 +45,9 @@ app.use((err, req, res, next) => {
 // Iniciar o servidor
 server.listen(5000, () => {
 
-    // Sincronização do banco de dados
-    // const ambiente = 'production';
-    const ambiente = 'develop';
-    const syncOptions = ambiente === "production" ? {} : { alter: true };
+
+    const ambiente = 'production';
+    const syncOptions = { alter: true };
     db.sequelize.sync(syncOptions).then(() => {
 
         console.log("Ambiente: ", ambiente);
