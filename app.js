@@ -2,16 +2,13 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const app = express();
+
 const server = http.createServer(app);
+app.use(cors());
+
 const fileUpload = require('express-fileupload');
 const db = require('./db/models');
 
-app.use(cors({
-    origin: ['https://app.manualmais.com.br', "localhost"], // apenas seu domínio
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-    credentials: true
-}));
 app.use(fileUpload()); 
 // Importar rotas
 
