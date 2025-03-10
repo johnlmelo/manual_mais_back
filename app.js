@@ -1,39 +1,46 @@
 const express = require('express');
-const http = require('http');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const db = require('./db/models');
+const setupRoutes = require('./routes');
 
 const app = express();
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+    origin: 'https://app.manualmais.com.br', // Origem específica para segurança
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+}));
+
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ extended: true, limit: '500mb' }));
-app.use(fileUpload());
+
+app.use(fileUpload({
+    limits: { fileSize: 500 * 1024 * 1024 }, // Limite de 500MB
+}));
 
 // Rotas
-const setupRoutes = require('./routes');
 setupRoutes(app);
 
-// Arquivos estáticos
+// Servir arquivos estáticos
 app.use('/storage', express.static(__dirname + '/public/files/'));
 
-// Middleware para tratamento de erros
+// Middleware de tratamento de erros
 app.use((err, req, res, next) => {
-    console.error('Erro:', err.stack);
+    console.error(err.stack);
     res.status(500).json({ error: 'Algo deu errado!' });
 });
 
-// Iniciar o servidor
+// Iniciar servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     db.sequelize.sync({ alter: true })
         .then(() => {
-            console.log("Ambiente: production");
-            console.log("Servidor e DB sincronizados na porta " + PORT);
+            console.log("Servidor rodando na porta", PORT);
         })
-        .catch(error => {
-            console.error("Erro ao sincronizar DB: ", error);
+        .catch((error) => {
+            console.log("Erro ao sincronizar modelos:", error);
         });
 });
