@@ -38,8 +38,6 @@ app.use((err, req, res, next) => {
 
 // Iniciar o servidor
 server.listen(5000, () => {
-
-
     const ambiente = 'production';
     const syncOptions = { alter: true };
     db.sequelize.sync(syncOptions).then(() => {
