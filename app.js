@@ -1,10 +1,10 @@
 const express = require('express');
 const http = require('http');
-const cors = require('cors');
-const app = express();
 
-const server = http.createServer(app);
+const app = express();
+const cors = require('cors');
 app.use(cors());
+const server = http.createServer(app);
 
 const fileUpload = require('express-fileupload');
 const db = require('./db/models');
