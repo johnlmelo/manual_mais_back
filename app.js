@@ -6,10 +6,6 @@ const server = http.createServer(app);
 const fileUpload = require('express-fileupload');
 const db = require('./db/models');
 
-app.use(fileUpload()); 
-// Importar rotas
-
-const setupRoutes = require('./routes');
 
 
 app.use((req, res, next) => {
@@ -19,6 +15,10 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(fileUpload()); 
+// Importar rotas
+
+const setupRoutes = require('./routes');
 // Middleware para análise do corpo da solicitação
 
 app.use(express.json({ limit: '500mb' }));
