@@ -15,8 +15,7 @@ module.exports = (sequelize) => {
         },
         tag: {
             type: DataTypes.STRING,  // O código da tag que será reutilizado
-            allowNull: false,
-            unique: true,  // Garante que a tag seja única
+            allowNull: true,
         },
         createdAt: {
             type: DataTypes.DATE,
