@@ -17,6 +17,10 @@ module.exports = (sequelize) => {
             type: DataTypes.TEXT,
             allowNull: true
         },
+        senha: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },        
         cep: {
             type: DataTypes.STRING,
             allowNull: true,
