@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { Empreendimentos, Pages, Blocos, Manuais, Documents } = require('../../db/models');
+const { Empreendimentos, Pages, Blocos, Manuais, Documents, Tipologias, Unidades } = require('../../db/models');
 
 // Get all empreendimentos
 exports.getAllEmpreendimentos = async (req, res) => {
@@ -16,6 +16,16 @@ exports.getAllEmpreendimentos = async (req, res) => {
                 { 
                     model: Documents,  // Substitua "OutraTabela" pelo nome da tabela associada
                     required: false,
+                },
+                { 
+                    model: Tipologias,  // Substitua "OutraTabela" pelo nome da tabela associada
+                    required: false,
+                    include: [
+                        { 
+                            model: Unidades,  // Substitua "OutraTabela" pelo nome da tabela associada
+                            required: false,
+                        }
+                    ]
                 }
             ]
         });
@@ -36,6 +46,10 @@ exports.getEmpreendimentoById = async (req, res) => {
                 },
                 { 
                     model: Documents,  // Substitua "OutraTabela" pelo nome da tabela associada
+                    required: false,
+                },
+                { 
+                    model: Tipologias,  // Substitua "OutraTabela" pelo nome da tabela associada
                     required: false,
                 }
             ]

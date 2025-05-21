@@ -44,7 +44,14 @@ exports.getAllPagesAll = async (req, res) => {
 // Get page by ID
 exports.getPageById = async (req, res) => {
     try {
-        const page = await Pages.findByPk(req.params.id);
+        const page = await Pages.findByPk(req.params.id,{
+            include: [
+                { 
+                    model: Blocos,  // Substitua "OutraTabela" pelo nome da tabela associada
+                    required: false,
+                }
+            ]
+        });
         if (page) {
             res.status(200).json(page);
         } else {

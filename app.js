@@ -1,58 +1,46 @@
 const express = require('express');
-const http = require('http');
 const cors = require('cors');
-const app = express();
-const server = http.createServer(app);
-
+const fileUpload = require('express-fileupload');
 const db = require('./db/models');
-
-// Importar rotas
 const setupRoutes = require('./routes');
 
+const app = express();
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.header('Access-Control-Allow-Headers', '*');
-    next();
-});
-
-// Middleware para análise do corpo da solicitação
+// Middlewares
+app.use(cors({
+    origin: 'https://app.manualmais.com.br', // Origem específica para segurança
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+}));
 
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ extended: true, limit: '500mb' }));
 
-// Setup de rotas
+app.use(fileUpload({
+    limits: { fileSize: 500 * 1024 * 1024 }, // Limite de 500MB
+}));
+
+// Rotas
 setupRoutes(app);
 
-// Servindo arquivos estáticos
+// Servir arquivos estáticos
 app.use('/storage', express.static(__dirname + '/public/files/'));
 
-// Documentação
-// const swaggerUi = require('swagger-ui-express');
-// const swaggerSpec = require('./swaggerDefinition');
-// app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-// Middleware para tratamento de erros
+// Middleware de tratamento de erros
 app.use((err, req, res, next) => {
-    console.error(err.stack); // Log do erro para debugging
-    res.status(500).send({ error: 'Algo deu errado!' });
+    console.error(err.stack);
+    res.status(500).json({ error: 'Algo deu errado!' });
 });
 
-
-// Iniciar o servidor
-server.listen(5000, () => {
-
-    // Sincronização do banco de dados
-    // const ambiente = 'production';
-    const ambiente = 'production';
-    const syncOptions = ambiente === "production" ? {} : { alter: true };
-    db.sequelize.sync(syncOptions).then(() => {
-
-        console.log("Ambiente: ", ambiente);
-        console.log("Todos os modelos foram sincronizados com sucesso.");
-        
-    }).catch((error)=>{
-        console.log("Erro: ", error );
-    });
+// Iniciar servidor
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    db.sequelize.sync({ alter: true })
+        .then(() => {
+            console.log("Servidor rodando na porta", PORT);
+        })
+        .catch((error) => {
+            console.log("Erro ao sincronizar modelos:", error);
+        });
 });
