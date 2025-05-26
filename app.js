@@ -8,7 +8,7 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-    origin: 'https://app.manualmais.com.br', // Origem específica para segurança
+    origin: '*', // Origem específica para segurança
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
