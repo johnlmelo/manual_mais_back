@@ -1,4 +1,19 @@
 {
+"scripts": {
+    "start": "pm2 start app.js",
+    "restart": "pm2 restart app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "name": "maismanual-backend",
+  "version": "1.0.0",
+  "description": "Backend for Mais Manual",
+  "main": "server.js",
+  "author": "John Melo",
+  "license": "ISC",
+  "engines": {
+    "node": "^18.16.0"
+},
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
