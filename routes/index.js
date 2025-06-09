@@ -16,9 +16,11 @@ const TagsReusaveis = require('../api/TagsReusaveis/Routes');
 const Unidades = require('../api/unidades/Routes');
 const Documents = require('../api/documentos/Routes');
 const User = require('../api/user/Routes');
+const GrupoDeBlocos = require('../api/grupodeblocos/Routes');
 
 const setupRoutes = (app) => {
     app.use('/empreendimentos', Empreendimentos);
+    app.use('/grupo-de-bocos', GrupoDeBlocos);
     app.use('/blocos', Blocos);
     app.use('/', Files);
     app.use('/manuais', Manuais);

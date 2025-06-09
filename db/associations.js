@@ -11,6 +11,7 @@ module.exports = (db) => {
         TabelaGarantia,
         LinhaGarantia,
         Documents,
+        GrupoDeBlocos
     } = db;
 
     // Associações com cascata de deleção
@@ -113,4 +114,13 @@ module.exports = (db) => {
     Blocos.belongsTo(Empreendimentos, {
         onDelete: 'CASCADE'
     });
+
+    GrupoDeBlocos.hasMany(Pages, {
+        onDelete: 'CASCADE'
+    });
+
+    Pages.belongsTo(GrupoDeBlocos, {
+        onDelete: 'CASCADE'
+    });
+
 };

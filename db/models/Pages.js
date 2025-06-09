@@ -47,6 +47,9 @@ module.exports = (sequelize) => {
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE', 
         },
+        groupoId: {
+            type: DataTypes.INTEGER
+        },
         createdAt: {
             type: DataTypes.DATE,
             allowNull: true,
